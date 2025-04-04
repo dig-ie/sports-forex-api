@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const axios = require("axios");
-
+//TO DO: Fazer as rotas e integrar com a lógica de cache
 const router = express.Router();
 
 // Get last 10 soccer match results
