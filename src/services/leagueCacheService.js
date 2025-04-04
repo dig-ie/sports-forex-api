@@ -14,9 +14,9 @@ const fetchLeagues = async (season = new Date().getFullYear(), country = "Englan
 
   const paramsList = [
     { season, country, type },
-    { season, country },       // Remove type
-    { season },                // Remove country
-    {}                         // Remove season (get everything)
+    { season, country },    
+    { season },      
+    {}
   ];
 
   for (const params of paramsList) {
