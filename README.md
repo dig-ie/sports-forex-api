@@ -16,5 +16,3 @@ Utilizado o padrão abaixo para manter o histórico limpo e compreensível:
 | `docs`     | Documentação adicionada ou atualizada                     |
 | `test`     | Adição ou modificação de testes                           |
 | `chore`    | Tarefas auxiliares (configs, dependências, etc.)          |
-
-### 💡 Exemplo:
