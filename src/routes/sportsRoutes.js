@@ -1,13 +1,21 @@
 require("dotenv").config();
 const express = require("express");
 const axios = require("axios");
-//TO DO: Fazer as rotas e integrar com a lógica de cache
 const router = express.Router();
 const fetchLeagues = require("../services/leagueCacheService").fetchLeagues;
+const { getLeagues } = require("../services/leagueCacheService").getLeagues;
+
+router.get("/soccer/leagues", (req, res) => {
+  const result = getLeagues();
+  if (!result || !result.leagues) {
+    return res.status(503).json({ error: "Leagues data not available yet" });
+  }
+  res.json(result);
+});
 
 router.get("/soccer/results", async (req, res) => {
   try {
-    const { league: leagueName, season} = req.query;
+    const { league: leagueName, season } = req.query;
 
     if (!leagueName || !season) {
       return res.status(400).json({
@@ -15,8 +23,8 @@ router.get("/soccer/results", async (req, res) => {
       });
     }
 
-    
-    const leaguesMap = await fetchLeagues(season);
+    const { leagues: leaguesMap } = await fetchLeagues(season);
+
     const leagueId = leaguesMap[leagueName.toLowerCase().trim()];
 
     if (!leagueId) {
@@ -26,7 +34,6 @@ router.get("/soccer/results", async (req, res) => {
       });
     }
 
-    
     const queryParams = new URLSearchParams({
       season,
       league: leagueId,
@@ -46,5 +53,10 @@ router.get("/soccer/results", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+
+
+
+//TO DO: PLAYERS DATA ROUTES
 
 module.exports = router;
