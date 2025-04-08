@@ -6,7 +6,9 @@ const sportsRoutes = require("./src/routes/sportsRoutes");
 
 const app = express();
 app.use(cors());
-app.use(express.json()); // Habilita JSON no body das requisições
+app.use(express.json());
+const { loadLeagues } = require("./services/leagueCacheService");
+loadLeagues();
 
 // Rota de teste
 app.get("/ping", (req, res) => {
