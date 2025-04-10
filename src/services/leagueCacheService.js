@@ -1,14 +1,13 @@
 const axios = require("axios");
 
-let leaguesCache = null;
-let cachedFilters = null;
+const leaguesCache = {}; // key: `${season}-${country}-${type}` => value: { leagues, defaultAppliedFilters }
 
 const fetchLeagues = async (season = new Date().getFullYear(), country = "England", type = "league") => {
-  if (leaguesCache) {
-    return {
-      leagues: leaguesCache,
-      defaultAppliedFilters: cachedFilters,
-    };
+  const cacheKey = `${season}-${country}-${type}`;
+
+  // ✅ Return from cache if available
+  if (leaguesCache[cacheKey]) {
+    return leaguesCache[cacheKey];
   }
 
   if (!process.env.API_FOOTBALL_URL || !process.env.API_FOOTBALL_KEY) {
@@ -28,23 +27,25 @@ const fetchLeagues = async (season = new Date().getFullYear(), country = "Englan
       const url = `${process.env.API_FOOTBALL_URL}/leagues?${searchParams}`;
 
       const response = await axios.get(url, {
-        headers: { "x-apisports-key": process.env.API_FOOTBALL_KEY },
+        headers: {
+          "x-apisports-key": process.env.API_FOOTBALL_KEY,
+        },
       });
 
       if (response.data && response.data.response && response.data.response.length > 0) {
-        leaguesCache = response.data.response.reduce((acc, leagueData) => {
+        const leaguesMap = response.data.response.reduce((acc, leagueData) => {
           if (leagueData.league && leagueData.league.name && leagueData.league.id) {
             acc[leagueData.league.name.toLowerCase()] = leagueData.league.id;
           }
           return acc;
         }, {});
 
-        cachedFilters = params;
-
         const result = {
-          leagues: leaguesCache,
-          defaultAppliedFilters: cachedFilters,
+          leagues: leaguesMap,
+          defaultAppliedFilters: params,
         };
+
+        leaguesCache[cacheKey] = result;
 
         console.log("✅ Debug - Retorno final do fetchLeagues:");
         console.log(JSON.stringify(result, null, 2));
@@ -60,6 +61,7 @@ const fetchLeagues = async (season = new Date().getFullYear(), country = "Englan
   return null;
 };
 
+// Loads default on startup (England, current year, league)
 const loadLeagues = async () => {
   try {
     await fetchLeagues();
@@ -68,11 +70,10 @@ const loadLeagues = async () => {
   }
 };
 
-const getLeagues = () => {
-  return {
-    leagues: leaguesCache,
-    defaultAppliedFilters: cachedFilters,
-  };
+// Returns full cache object or filters it by params if needed
+const getLeagues = (season = new Date().getFullYear(), country = "England", type = "league") => {
+  const cacheKey = `${season}-${country}-${type}`;
+  return leaguesCache[cacheKey] || null;
 };
 
-module.exports = { loadLeagues, getLeagues };
+module.exports = { fetchLeagues, loadLeagues, getLeagues };
