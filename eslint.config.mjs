@@ -20,7 +20,7 @@ export default defineConfig([
       "semi": ["error", "always"],
       "no-process-exit": "warn",
       "no-async-promise-executor": "warn",
-      "no-console": isProduction ? "error" : "off", // Bloqueia console.log apenas em produção
+      "no-console": isProduction ? "error" : "off",
     },
   },
 ]);
