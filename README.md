@@ -134,11 +134,10 @@ git commit -m "feat(soccer): add odds endpoint with pre-game support"
 
 > Esta API agrega dados de:
 > - **API‑Football** (https://www.api‑football.com)  
-> - **The Odds API** (https://the-odds-api.com)  
-> - **AwesomeAPI** (https://economia.awesomeapi.com.br)  
+> - **The Odds API** (https://the-odds-api.com)   
 
 Dados fornecidos “as is”, sujeitos aos termos das fontes.  
-Plano free: limites de requisições (ex: 500/mês em The Odds API).  
+Plano free: limites de requisições (ex: 500/mês em The Odds API).
 Não redistribua os dados crus como produto.
 
 ---
