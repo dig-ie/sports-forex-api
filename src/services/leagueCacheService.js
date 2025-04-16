@@ -47,8 +47,8 @@ const fetchLeagues = async (season = new Date().getFullYear(), country = "Englan
 
         leaguesCache[cacheKey] = result;
 
-        console.log("✅ Debug - Retorno final do fetchLeagues:");
-        console.log(JSON.stringify(result, null, 2));
+        console.log("✅ Leagues fetched successfully");
+        // console.log(JSON.stringify(result, null, 2));
 
         return result;
       }
