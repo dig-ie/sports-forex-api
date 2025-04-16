@@ -5,15 +5,10 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./src/docs/swaggerConfig");
 const convertRoutes = require("./src/routes/convertionRoutes");
 const sportsRoutes = require("./src/routes/sportsRoutes");
-//TO DO: Melhorar default filters retornando muitas ligas
-
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-const leagueCacheService = require("./src/services/leagueCacheService");
-
-leagueCacheService.loadLeagues();
 
 /**
  * @swagger
