@@ -3,7 +3,8 @@ const express = require("express");
 const axios = require("axios");
 const router = express.Router();
 const { fetchLeagues, getLeagues } = require("../services/leagueCacheService");
-//TO DO: Minimizar retorno de results
+const { soccerResultsHandler } = require("../controllers/soccerController")
+
 
 /**
  * @swagger
@@ -95,81 +96,7 @@ router.get("/soccer/leagues", async (req, res) => {
  *       500:
  *         description: Erro interno do servidor
  */
-router.get("/soccer/results", async (req, res) => {
-  try {
-    const {
-      league: leagueName,
-      season = new Date().getFullYear(),
-      country = "England",
-      type = "league",
-    } = req.query;
-
-    if (!leagueName) {
-      return res.status(400).json({
-        error: "Missing required query parameter: 'league'.",
-      });
-    }
-
-    const { leagues: leaguesMap } = await fetchLeagues(season, country, type);
-    const leagueId = leaguesMap[leagueName.toLowerCase().trim()];
-
-    if (!leagueId) {
-      return res.status(400).json({
-        error: "League not found. Please check the spelling or availability.",
-        provided: leagueName,
-      });
-    }
-
-    const queryParams = new URLSearchParams({
-      season,
-      league: leagueId,
-    });
-
-    const url = `${process.env.API_FOOTBALL_URL}/fixtures?${queryParams.toString()}`;
-
-    const response = await axios.get(url, {
-      headers: {
-        "x-apisports-key": process.env.API_FOOTBALL_KEY,
-      },
-    });
-
-    const transformedData = response.data.response.map((match) => ({
-      match_id: match.fixture.id,
-      date: match.fixture.date,
-      status: match.fixture.status.short,
-      league: match.league.name,
-      season: match.league.season,
-      round: match.league.round,
-      venue: match.fixture.venue.name,
-      city: match.fixture.venue.city,
-      home_team: {
-        name: match.teams.home.name,
-        goals: match.goals.home,
-        winner: match.teams.home.winner,
-      },
-      away_team: {
-        name: match.teams.away.name,
-        goals: match.goals.away,
-        winner: match.teams.away.winner,
-      },
-      halftime_score: {
-        home: match.score.halftime.home,
-        away: match.score.halftime.away,
-      },
-      fulltime_score: {
-        home: match.score.fulltime.home,
-        away: match.score.fulltime.away,
-      },
-      source: "API-Football",
-      last_updated: new Date().toISOString(),
-    }));
-
-    res.json(transformedData);
-  } catch (error) {
-    console.error("Error fetching soccer results:", error.message);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
+router.get("/soccer/results", soccerResultsHandler);
 
 /**
  * @swagger
