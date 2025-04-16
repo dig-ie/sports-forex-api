@@ -71,9 +71,9 @@ const loadLeagues = async () => {
 };
 
 // Returns full cache object or filters it by params if needed
-const getLeagues = (season = new Date().getFullYear(), country = "England", type = "league") => {
+const getCacheLeagues = (season = new Date().getFullYear(), country = "England", type = "league") => {
   const cacheKey = `${season}-${country}-${type}`;
   return leaguesCache[cacheKey] || null;
 };
 
-module.exports = { fetchLeagues, loadLeagues, getLeagues };
+module.exports = { fetchLeagues, loadLeagues, getCacheLeagues };
