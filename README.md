@@ -1,6 +1,3 @@
-# sports-forex-api
-# 🚧 Em desenvolvimento! Atualizações frequentes. 🚀
-
 **API de Esportes e Forex** – Uma API que fornece resultados esportivos, odds com formato amigável e conversão de moedas para apostas internacionais.  
 **Sports-Forex API** – An API that provides sports results, odds, and currency conversion for international betting.
 
@@ -145,3 +142,6 @@ Não redistribua os dados crus como produto.
 ## 📄 Licença / License
 
 Este projeto está licenciado sob a **MIT License**. Veja o arquivo [LICENSE](LICENSE) para detalhes.
+
+# sports-forex-api
+# 🚧 Em desenvolvimento! Atualizações frequentes. 🚀
