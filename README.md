@@ -143,5 +143,4 @@ Não redistribua os dados crus como produto.
 
 Este projeto está licenciado sob a **MIT License**. Veja o arquivo [LICENSE](LICENSE) para detalhes.
 
-# sports-forex-api
 # 🚧 Em desenvolvimento! Atualizações frequentes. 🚀
